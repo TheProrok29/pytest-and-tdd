@@ -3,11 +3,23 @@ import pytest
 from twitter import Twitter
 
 
-@pytest.fixture
-def twitter():
-    twitter = Twitter()
-    return twitter
+@pytest.fixture(params=[None, "test.txt"])
+def twitter(request):
+    twitter = Twitter(backend=request.param)
+    yield twitter
+    twitter.delete()
 
+
+'''@pytest.fixture
+def twitter(request):
+    twitter = Twitter()
+
+    def fin():
+        twitter.delete()
+
+    request.addfinalizer(fin)
+    return twitter
+'''
 
 def test_twitter_initialization(twitter):
     assert twitter
