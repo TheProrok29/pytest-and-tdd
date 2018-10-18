@@ -8,7 +8,7 @@ import requests
 USERS_API = "https://api.github.com/users/"
 
 class Twitter(object):
-    version = '1.2 '
+    version = '1.3'
 
     def __init__(self, backend=None, username=None):
         self.backend = backend
