@@ -2,12 +2,31 @@ import pytest
 
 from twitter import Twitter
 
+'''
+#Niebezpieczna praktyka otwierania pliku przed każdym 
+#z testów nawet jeśli nie jest to konieczne
 
-@pytest.fixture(params=[None, "test.txt"])
-def twitter(request):
-    twitter = Twitter(backend=request.param)
-    yield twitter
-    twitter.delete()
+@pytest.fixture(autouse=True)
+def prepare_backend_file():
+    with open('test.txt', 'w'):
+        pass
+'''
+
+
+@pytest.fixture
+def backend(tmpdir):
+    temp_file = tmpdir.join('test.txt')
+    temp_file.write('')
+    return temp_file
+
+
+@pytest.fixture(params=['list', 'backend'], name='twitter')
+def fixture_twitter(backend, request):
+    if request.param == 'list':
+        twitter = Twitter()
+    elif request.param == 'backend':
+        twitter = Twitter(backend=backend)
+    return twitter
 
 
 '''@pytest.fixture
@@ -20,6 +39,7 @@ def twitter(request):
     request.addfinalizer(fin)
     return twitter
 '''
+
 
 def test_twitter_initialization(twitter):
     assert twitter
