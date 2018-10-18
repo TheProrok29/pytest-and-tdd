@@ -1,4 +1,4 @@
-from unittest.mock import patch
+from unittest.mock import patch, Mock, MagicMock
 
 import pytest
 import requests
@@ -124,5 +124,32 @@ def test_tweet_with_username(avatar_mock, twitter):
         pytest.skip()
 
     twitter.tweet('Test message')
-    assert twitter.tweets == [{'message': 'Test message', 'avatar': 'test'}]
+    assert twitter.tweets == [{'message': 'Test message', 'avatar': 'test', 'hashtags': []}]
     avatar_mock.assert_called()
+
+
+@patch.object(requests, 'get', return_value=ResponseGetMock())
+def test_tweet_with_hashtag_mock(avatar_mock, twitter):
+    twitter.find_hashtags = Mock()
+    twitter.find_hashtags.return_value = ['first']
+    twitter.tweet('Test #second')
+    assert twitter.tweets[0]['hashtags'] == ['first']
+    twitter.find_hashtags.assert_called_with('Test #second')
+
+
+'''
+# Mock nie wspiera nadpisywania magicznych metod pythona
+
+def test_twitter_version(twitter):
+    twitter.version = Mock()
+    twitter.version.__eq__.return_value = '2.0'
+    assert twitter.version == '2.0'
+
+'''
+
+
+def test_twitter_version(twitter):
+    twitter.version = Magic
+    Mock()
+    twitter.version.__eq__.return_value = '2.0'
+    assert twitter.version == '2.0'
