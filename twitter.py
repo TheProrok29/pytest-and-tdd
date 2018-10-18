@@ -12,7 +12,7 @@ class Twitter(object):
     @property
     def tweets(self):
         if self.backend and not self.__tweets:
-            self.__tweets = [line.rstrip('\n') for line in self.backend.read()]
+            self.__tweets = [line.rstrip('\n') for line in self.backend.readlines()]
         return self.__tweets
 
     def tweet(self, message):

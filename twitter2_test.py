@@ -67,6 +67,16 @@ def test_tweet_with_hashtag(twitter, message, expected):
     assert twitter.find_hashtags(message) == expected
 
 
+def test_initialize_two_twitter_classes(backend):
+    twitter1 = Twitter(backend=backend)
+    twitter2 = Twitter(backend=backend)
+
+    twitter1.tweet('Test1')
+    twitter1.tweet('Test2')
+
+    assert twitter2.tweets == ['Test1', 'Test2']
+
+
 '''
 def test_tweet_with_hashtag():
     twitter = Twitter()
