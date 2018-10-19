@@ -12,11 +12,6 @@ class ResponseGetMock(object):
         return {'avatar_url': 'test'}
 
 
-@pytest.fixture(autouse=True)
-def no_requests(monkeypatch):
-    monkeypatch.delattr('requests.sessions.Session.request')
-
-
 '''
 #Niebezpieczna praktyka otwierania pliku przed każdym 
 #z testów nawet jeśli nie jest to konieczne
@@ -26,14 +21,6 @@ def prepare_backend_file():
     with open('test.txt', 'w'):
         pass
 '''
-
-
-@pytest.fixture
-def backend(tmpdir):
-    temp_file = tmpdir.join('test.txt')
-    temp_file.write('')
-    return temp_file
-
 
 @pytest.fixture(params=[None, 'TheProrok29'])
 def username(request):
@@ -149,7 +136,6 @@ def test_twitter_version(twitter):
 
 
 def test_twitter_version(twitter):
-    twitter.version = Magic
-    Mock()
+    twitter.version = MagicMock()
     twitter.version.__eq__.return_value = '2.0'
     assert twitter.version == '2.0'
