@@ -9,12 +9,16 @@ class TwitterTest(unittest.TestCase):
     def test_initialization(self):
         self.assertTrue(self.twitter)
 
-    def test_tweet_single(self):
+    '''
+     def test_tweet_single(self):
         # Given
         # When
         self.twitter.tweet("Test message")
         # Then
         self.assertEqual(self.twitter.tweets, ["Test message"])
+
+    '''
+
 
 
 if __name__ == '__main__':
